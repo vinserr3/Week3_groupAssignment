@@ -9,7 +9,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -36,20 +35,9 @@ public class RobotApplication extends Application {
         Button startButton = new Button("Solve Maze");
         startButton.setLayoutY(mazeImage.getHeight() + 10);
         startButton.setLayoutX(10);
-        startButton.setOnAction(e -> autoMoveDroid(robotView));
+        startButton.setOnAction(e -> autoMoveDroidMaze1(robotView));
         startButton.setFocusTraversable(false); //When the button was selectable, it would stop the arrow keys from working
-
-        Button reset = new Button("Reset");
-        reset.setLayoutY(mazeImage.getHeight() + 10);
-        reset.setLayoutX(200);
-        reset.setFocusTraversable(false); //When the button was selectable, it would stop the arrow keys from working
-        reset.setOnMouseClicked(e -> {
-            robotView.setX(14);
-            robotView.setY(260);
-        });
-
-
-        Group grp = new Group(root, startButton,reset);
+        Group grp = new Group(root, startButton);
 
         // Create the scene
         Scene scene = new Scene(grp, mazeImage.getWidth(), mazeImage.getHeight() + 50);
@@ -83,61 +71,34 @@ public class RobotApplication extends Application {
      * Method to automatically move the robot to the finish
      * @param robotView The robot
      */
-    private void autoMoveDroid(ImageView robotView) {
-        int i = 1;
+    private void autoMoveDroidMaze1(ImageView robotView) {
         // Create a series of movements as TranslateTransitions
         TranslateTransition step1 = new TranslateTransition(Duration.seconds(1), robotView);
         step1.setByX(25);
-        System.out.print(i);
-        i++;
         TranslateTransition step2 = new TranslateTransition(Duration.seconds(1), robotView);
         step2.setByY(-110);
-        System.out.print(i);
-        i++;
         TranslateTransition step3 = new TranslateTransition(Duration.seconds(1), robotView);
         step3.setByX(225);
-        System.out.print(i);
-        i++;
         TranslateTransition step4 = new TranslateTransition(Duration.seconds(1), robotView);
         step4.setByY(-60);
-        System.out.print(i);
-        i++;
         TranslateTransition step5 = new TranslateTransition(Duration.seconds(1), robotView);
         step5.setByX(55);
-        System.out.print(i);
-        i++;
         TranslateTransition step6 = new TranslateTransition(Duration.seconds(1), robotView);
         step6.setByY(225);
-        System.out.print(i);
-        i++;
         TranslateTransition step7 = new TranslateTransition(Duration.seconds(1), robotView);
         step7.setByX(60);
-        System.out.print(i);
-        i++;
         TranslateTransition step8 = new TranslateTransition(Duration.seconds(1), robotView);
         step8.setByY(-105);
-        System.out.print(i);
-        i++;
         TranslateTransition step9 = new TranslateTransition(Duration.seconds(1), robotView);
         step9.setByX(110);
-        System.out.print(i);
-        i++;
         TranslateTransition step10 = new TranslateTransition(Duration.seconds(1), robotView);
         step10.setByY(-115);
-        System.out.print(i);
-        i++;
         TranslateTransition step11 = new TranslateTransition(Duration.seconds(1), robotView);
         step11.setByX(60);
-        System.out.print(i);
-        i++;
         TranslateTransition step12 = new TranslateTransition(Duration.seconds(1), robotView);
         step12.setByY(145);
-        System.out.print(i);
-        i++;
         TranslateTransition step13 = new TranslateTransition(Duration.seconds(1), robotView);
         step13.setByX(25);
-        System.out.print(i);
-        i++;
         // Combine all movements into a sequence
         SequentialTransition sequence = new SequentialTransition(step1, step2,step3, step4, step5, step6, step7, step8, step9,
                 step10, step11, step12, step13);
