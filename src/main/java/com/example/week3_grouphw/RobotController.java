@@ -1,18 +1,20 @@
 package com.example.week3_grouphw;
 
+import javafx.scene.Group;
+import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.image.PixelReader;
 
-public class RobotController {
-    private ImageView robotView; //The robot
+public class RobotController extends RobotApplication {
+    private Group player; //The robot
     private Image mazeImage;//The Maze
     private double stepSize = 5.0; // How much the robot will move by
 
-    public RobotController(ImageView robotView, Image mazeImage) {
-        this.robotView = robotView;
+    public RobotController(Group player, Image mazeImage) {
+        this.player = player;
         this.mazeImage = mazeImage;
     }
 
@@ -20,29 +22,30 @@ public class RobotController {
      * Method that will move the robot on arrow key presses
      * @param event the arrow key presses
      */
-    public void handleKeyPress(KeyEvent event, ImageView robot) {
-        double x = robot.getX();
-        double y = robot.getY();
+    public void handleKeyPress(KeyEvent event, Group player) {
+        double x = player.getLayoutX();
+        double y = player.getLayoutY();
 
         switch (event.getCode()) {
             case W:
                 if (canMove(x, y - stepSize)) {
-                    robot.setY(y - stepSize);
+                    player.setLayoutY(y - stepSize);
+                    System.out.println("working");
                 }
                 break;
             case S:
                 if (canMove(x, y + stepSize)) {
-                    robot.setY(y + stepSize);
+                    player.setLayoutY(y + stepSize);                    System.out.println("working");
                 }
                 break;
             case A:
                 if (canMove(x - stepSize, y)) {
-                    robot.setX(x - stepSize);
+                    player.setLayoutX(x - stepSize);                    System.out.println("working");
                 }
                 break;
             case D:
                 if (canMove(x + stepSize, y)) {
-                    robot.setX(x + stepSize);
+                    player.setLayoutX(x + stepSize);                    System.out.println("working");
                 }
                 break;
             default:
@@ -63,8 +66,8 @@ public class RobotController {
         // Check 4 corners of the robot image for collision detection (Had to edit the dimensions because it wouldn't fit in the maze)
         int topLeftX = (int) newX;
         int topLeftY = (int) newY;
-        int bottomRightX = (int) (newX + robotView.getImage().getWidth()/2);
-        int bottomRightY = (int) (newY + robotView.getImage().getHeight()/2);
+        int bottomRightX = (int) (newX + player.getLayoutX()/2);
+        int bottomRightY = (int) (newY + player.getLayoutY()/2);
 
         // Only allow movement if all corners are on non-blocking paths
         return isPathClear(pixelReader, topLeftX, topLeftY) &&
@@ -83,7 +86,10 @@ public class RobotController {
     private boolean isPathClear(PixelReader pixelReader, int x, int y) {
         try {
             Color color = pixelReader.getColor(x, y);
-            return color.equals(Color.WHITE);
+            if(color.equals(Color.WHITE) || color.equals(Color.rgb(204, 119, 0, 255)) || color.equals(Color.BLUEVIOLET)){
+                return true;
+            }
+            else return false;
         } catch (Exception e) {
             return false;
         }
@@ -93,8 +99,8 @@ public class RobotController {
      * Method that checks if the robot was at the Goal position
      */
     private void checkGoalReached() {
-        double robotX = robotView.getX();
-        double robotY = robotView.getY();
+        double robotX = player.getLayoutX();
+        double robotY = player.getLayoutX();
 
         // Check if the robot is close to the goal coordinates
         if (Math.abs(robotX - RobotApplication.goalX) < 10 && Math.abs(robotY - RobotApplication.goalY) < 10) {

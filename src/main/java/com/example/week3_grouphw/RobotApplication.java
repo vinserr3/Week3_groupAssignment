@@ -13,6 +13,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -36,9 +40,21 @@ public class RobotApplication extends Application {
         ImageView robotView = new ImageView(robotImage);
         robotView.setX(14); // Initial X position
         robotView.setY(260); // Initial Y position
+        robotView.setVisible(false);
+
+        Car car1 = new Car();
+        car1.setLayoutX(20);
+        car1.setLayoutY(260);
+        Car car2 = new Car();
+        car2.setLayoutX(14);
+        car2.setLayoutY(250);
+
+
         // Create a pane for the layout
         Pane root = new Pane();
-        root.getChildren().addAll(mazeView, robotView);
+        root.getChildren().addAll(mazeView, robotView, car1);
+
+
 
         Button startButton = new Button("Solve Maze");
         startButton.setLayoutY(mazeImage.getHeight() + 10);
@@ -63,6 +79,7 @@ public class RobotApplication extends Application {
         robot2View.setX(14);
         robot2View.setY(250);
 
+
         // Add components to Pane for Maze 2
         root2.getChildren().addAll(maze2View, robot2View);
 
@@ -82,12 +99,10 @@ public class RobotApplication extends Application {
         Scene scene = new Scene(tabPane, 800, 600);
 
         //Handle key presses for first maze
-        RobotController robotController = new RobotController(robotView, mazeImage);
-        scene.setOnKeyPressed(e -> robotController.handleKeyPress(e, robotView));
-
-
-        RobotController robot2Controller = new RobotController(robot2View, maze2Image);
-        root2.setOnKeyPressed(e -> robot2Controller.handleKeyPress(e, robot2View));
+        RobotController robotController = new RobotController(car1, mazeImage);
+        scene.setOnKeyPressed(e -> robotController.handleKeyPress(e, car1));
+        RobotController robot2Controller = new RobotController(car2, maze2Image);
+        maze1Tab.setOnSelectionChanged(e -> scene.setOnKeyPressed(f -> robot2Controller.handleKeyPress(f, car2)));
 
         // Set the scene and show the stage
         primaryStage.setTitle("Maze Robot");
@@ -117,6 +132,7 @@ public class RobotApplication extends Application {
      */
     private void autoMoveDroidMaze1(ImageView robotView) {
         // Create a series of movements as TranslateTransitions
+        robotView.setVisible(true);
         robotView.setX(14);
         robotView.setY(260);
         TranslateTransition step1 = new TranslateTransition(Duration.seconds(1), robotView);
@@ -152,9 +168,11 @@ public class RobotApplication extends Application {
         SequentialTransition sequence = new SequentialTransition(step1, step2,step3, step4, step5, step6, step7, step8, step9,
                 step10, step11, step12, step13, step14);
         sequence.play();
+        robotView.setVisible(false);
     }
 
     private void autoMoveDroidMaze2(ImageView robotView){
+
         robotView.setX(23);
         robotView.setY(20);
         TranslateTransition step1 = new TranslateTransition(Duration.seconds(1), robotView);
@@ -176,5 +194,29 @@ public class RobotApplication extends Application {
         step8.setByY(-290);
         SequentialTransition sequence = new SequentialTransition(step1,step2, step3, step4, step5, step6, step7, step8);
         sequence.play();
+    }
+}
+
+class Car extends Group{
+    public Car(){
+        Polygon car = new Polygon();
+        car.getPoints().addAll(new Double[]{
+                1.0, 16.0,
+                9.0, 2.0,
+                31.0, 0.5,
+                33.0, 5.5,
+                47.0, 7.5,
+                48.5, 10.5,
+                48.5, 16.0});
+        car.setFill(Color.PURPLE);
+        Rectangle window1 = new Rectangle(13,4,4,4.5);
+        Rectangle window2 = new Rectangle(20,4.5,8.5,4);
+        Circle wheel1 = new Circle(12,17,4);
+        Circle wheel2 = new Circle(39,17,4);
+        window1.setFill(Color.LIGHTGREEN);
+        window2.setFill(Color.LIGHTGREEN);
+
+        getChildren().addAll(car, window1,window2,wheel1,wheel2);
+
     }
 }
