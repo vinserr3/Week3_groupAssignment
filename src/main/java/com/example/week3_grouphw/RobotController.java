@@ -20,29 +20,29 @@ public class RobotController {
      * Method that will move the robot on arrow key presses
      * @param event the arrow key presses
      */
-    public void handleKeyPress(KeyEvent event) {
-        double x = robotView.getX();
-        double y = robotView.getY();
+    public void handleKeyPress(KeyEvent event, ImageView robot) {
+        double x = robot.getX();
+        double y = robot.getY();
 
         switch (event.getCode()) {
-            case UP:
+            case W:
                 if (canMove(x, y - stepSize)) {
-                    robotView.setY(y - stepSize);
+                    robot.setY(y - stepSize);
                 }
                 break;
-            case DOWN:
+            case S:
                 if (canMove(x, y + stepSize)) {
-                    robotView.setY(y + stepSize);
+                    robot.setY(y + stepSize);
                 }
                 break;
-            case LEFT:
+            case A:
                 if (canMove(x - stepSize, y)) {
-                    robotView.setX(x - stepSize);
+                    robot.setX(x - stepSize);
                 }
                 break;
-            case RIGHT:
+            case D:
                 if (canMove(x + stepSize, y)) {
-                    robotView.setX(x + stepSize);
+                    robot.setX(x + stepSize);
                 }
                 break;
             default:

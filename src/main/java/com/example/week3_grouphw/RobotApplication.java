@@ -57,14 +57,20 @@ public class RobotApplication extends Application {
         Image maze2Image = new Image("maze2.png");
         ImageView maze2View = new ImageView(maze2Image);
 
+        //load second robot
+        Image droid2 = new Image("robot.png");
+        ImageView robot2View = new ImageView(droid2);
+        robot2View.setX(14);
+        robot2View.setY(250);
+
         // Add components to Pane for Maze 2
-        root2.getChildren().addAll(maze2View);
+        root2.getChildren().addAll(maze2View, robot2View);
 
         // Add Solve button for Maze 2
         Button solveMaze2Button = new Button("Solve Maze");
         solveMaze2Button.setLayoutY(maze2Image.getHeight() + 10);
         solveMaze2Button.setLayoutX(10);
-        solveMaze2Button.setOnAction(e -> autoMoveDroidMaze1(robotView));
+        solveMaze2Button.setOnAction(e -> autoMoveDroidMaze2(robot2View));
         root2.getChildren().add(solveMaze2Button);
 
         maze2Tab.setContent(root2);
@@ -77,7 +83,11 @@ public class RobotApplication extends Application {
 
         //Handle key presses for first maze
         RobotController robotController = new RobotController(robotView, mazeImage);
-        scene.setOnKeyPressed(e -> robotController.handleKeyPress(e));
+        scene.setOnKeyPressed(e -> robotController.handleKeyPress(e, robotView));
+
+
+        RobotController robot2Controller = new RobotController(robot2View, maze2Image);
+        root2.setOnKeyPressed(e -> robot2Controller.handleKeyPress(e, robot2View));
 
         // Set the scene and show the stage
         primaryStage.setTitle("Maze Robot");
@@ -107,6 +117,8 @@ public class RobotApplication extends Application {
      */
     private void autoMoveDroidMaze1(ImageView robotView) {
         // Create a series of movements as TranslateTransitions
+        robotView.setX(14);
+        robotView.setY(260);
         TranslateTransition step1 = new TranslateTransition(Duration.seconds(1), robotView);
         step1.setByX(25);
         TranslateTransition step2 = new TranslateTransition(Duration.seconds(1), robotView);
@@ -133,9 +145,36 @@ public class RobotApplication extends Application {
         step12.setByY(145);
         TranslateTransition step13 = new TranslateTransition(Duration.seconds(1), robotView);
         step13.setByX(25);
+        TranslateTransition step14 = new TranslateTransition(Duration.seconds(1), robotView);
+        step14.setByX(-560);
+        step14.setByY(18);
         // Combine all movements into a sequence
         SequentialTransition sequence = new SequentialTransition(step1, step2,step3, step4, step5, step6, step7, step8, step9,
-                step10, step11, step12, step13);
+                step10, step11, step12, step13, step14);
+        sequence.play();
+    }
+
+    private void autoMoveDroidMaze2(ImageView robotView){
+        robotView.setX(23);
+        robotView.setY(20);
+        TranslateTransition step1 = new TranslateTransition(Duration.seconds(1), robotView);
+        step1.setByY(300);
+        TranslateTransition step2 = new TranslateTransition(Duration.seconds(1), robotView);
+        step2.setByX(165);
+        TranslateTransition step3 = new TranslateTransition(Duration.seconds(1), robotView);
+        step3.setByY(-150);
+        TranslateTransition step4 = new TranslateTransition(Duration.seconds(1), robotView);
+        step4.setByX(130);
+        TranslateTransition step5 = new TranslateTransition(Duration.seconds(1), robotView);
+        step5.setByY(-145);
+        TranslateTransition step6 = new TranslateTransition(Duration.seconds(1), robotView);
+        step6.setByX(120);
+        TranslateTransition step7 = new TranslateTransition(Duration.seconds(1), robotView);
+        step7.setByY(290);
+        TranslateTransition step8 = new TranslateTransition(Duration.seconds(1), robotView);
+        step8.setByX(-415);
+        step8.setByY(-290);
+        SequentialTransition sequence = new SequentialTransition(step1,step2, step3, step4, step5, step6, step7, step8);
         sequence.play();
     }
 }
