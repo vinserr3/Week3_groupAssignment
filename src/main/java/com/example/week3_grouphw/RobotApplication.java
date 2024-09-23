@@ -24,7 +24,6 @@ public class RobotApplication extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         TabPane tabPane = new TabPane();
-        tabPane.setFocusTraversable(false); //This isn't working for some reason
 
         Tab maze1Tab = new Tab("Maze 1");
         maze1Tab.setClosable(false);
@@ -47,12 +46,9 @@ public class RobotApplication extends Application {
         startButton.setOnAction(e -> autoMoveDroidMaze1(robotView));
         startButton.setFocusTraversable(false); //When the button was selectable, it would stop the arrow keys from working
         root.getChildren().add(startButton);
-
-        // Handle keyboard input
-        RobotController robotController = new RobotController(robotView, mazeImage);
-        root.setOnKeyPressed(e -> robotController.handleKeyPress(e)); //Was previously scene.setOnKeyPressed(e -> robotController.handleKeyPress(e));
         maze1Tab.setContent(root);
 
+        //Start of maze 2 tab
         Tab maze2Tab = new Tab("Maze 2");
         maze2Tab.setClosable(false);
         Pane root2 = new Pane();
@@ -74,10 +70,15 @@ public class RobotApplication extends Application {
         maze2Tab.setContent(root2);
 
         // Add both tabs to the TabPane
-        tabPane.getTabs().addAll(maze1Tab,maze2Tab);
+        tabPane.getTabs().addAll(maze1Tab, maze2Tab);
+        tabPane.setFocusTraversable(false);
 
+        Scene scene = new Scene(tabPane, 800, 600);
 
-        Scene scene = new Scene(tabPane, 800, 600); // Adjust scene size as necessary
+        //Handle key presses for first maze
+        RobotController robotController = new RobotController(robotView, mazeImage);
+        scene.setOnKeyPressed(e -> robotController.handleKeyPress(e));
+
         // Set the scene and show the stage
         primaryStage.setTitle("Maze Robot");
         primaryStage.setScene(scene);
