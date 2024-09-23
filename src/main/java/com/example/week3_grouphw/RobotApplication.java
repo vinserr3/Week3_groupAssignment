@@ -7,8 +7,11 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -19,6 +22,12 @@ public class RobotApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        TabPane tabPane = new TabPane();
+        tabPane.setFocusTraversable(false); //This isn't working for some reason
+
+        Tab maze1Tab = new Tab("Maze 1");
+        maze1Tab.setClosable(false);
         // Load the maze image
         Image mazeImage = new Image("maze.png"); // Path to the maze image
         ImageView mazeView = new ImageView(mazeImage);
@@ -37,20 +46,44 @@ public class RobotApplication extends Application {
         startButton.setLayoutX(10);
         startButton.setOnAction(e -> autoMoveDroidMaze1(robotView));
         startButton.setFocusTraversable(false); //When the button was selectable, it would stop the arrow keys from working
-        Group grp = new Group(root, startButton);
-
-        // Create the scene
-        Scene scene = new Scene(grp, mazeImage.getWidth(), mazeImage.getHeight() + 50);
+        root.getChildren().add(startButton);
 
         // Handle keyboard input
         RobotController robotController = new RobotController(robotView, mazeImage);
-        scene.setOnKeyPressed(event -> robotController.handleKeyPress(event));
+        root.setOnKeyPressed(e -> robotController.handleKeyPress(e)); //Was previously scene.setOnKeyPressed(e -> robotController.handleKeyPress(e));
+        maze1Tab.setContent(root);
 
+        Tab maze2Tab = new Tab("Maze 2");
+        maze2Tab.setClosable(false);
+        Pane root2 = new Pane();
+
+        // Load the second maze image
+        Image maze2Image = new Image("maze2.png");
+        ImageView maze2View = new ImageView(maze2Image);
+
+        // Add components to Pane for Maze 2
+        root2.getChildren().addAll(maze2View);
+
+        // Add Solve button for Maze 2
+        Button solveMaze2Button = new Button("Solve Maze");
+        solveMaze2Button.setLayoutY(maze2Image.getHeight() + 10);
+        solveMaze2Button.setLayoutX(10);
+        solveMaze2Button.setOnAction(e -> autoMoveDroidMaze1(robotView));
+        root2.getChildren().add(solveMaze2Button);
+
+        maze2Tab.setContent(root2);
+
+        // Add both tabs to the TabPane
+        tabPane.getTabs().addAll(maze1Tab,maze2Tab);
+
+
+        Scene scene = new Scene(tabPane, 800, 600); // Adjust scene size as necessary
         // Set the scene and show the stage
         primaryStage.setTitle("Maze Robot");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
 
     public static void main(String[] args) {
         launch(args);
