@@ -161,6 +161,7 @@ public class RobotApplication extends Application {
         alert.setHeaderText(null);
         alert.setContentText("You reached the goal!");
         alert.showAndWait();
+
     }
 
     /**

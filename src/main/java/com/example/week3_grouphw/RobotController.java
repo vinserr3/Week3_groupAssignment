@@ -161,6 +161,8 @@ public class RobotController {
         // Check if the robot is close to the goal coordinates
         if (Math.abs(robotX - RobotApplication.goalX) < 10 && Math.abs(robotY - RobotApplication.goalY) < 10) {
             RobotApplication.showGoalWindow();
+            robotView.setX(14);
+            robotView.setY(260);
         }
     }
 }
