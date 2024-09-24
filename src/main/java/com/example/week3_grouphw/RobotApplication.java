@@ -41,27 +41,27 @@ public class RobotApplication extends Application {
         ImageView robotView = new ImageView(robotImage);
         robotView.setX(14); // Initial X position
         robotView.setY(260); // Initial Y position
-        robotView.setVisible(false);
+        robotView.setVisible(true);//Visible by default
         //Load car
         Car car1 = new Car();
         car1.setLayoutX(14); //Initial X position
         car1.setLayoutY(260);//Initial Y position
-        car1.setVisible(true);
+        car1.setVisible(false);//Not visible by default
         // Create a pane for the layout
         Pane root = new Pane();
-        root.getChildren().addAll(mazeView, robotView,car1);
+        root.getChildren().addAll(mazeView, robotView,car1); //adds nodes to pane
 
+        //Button to start maze solving animation
         Button startButton = new Button("Solve Maze");
         startButton.setLayoutY(mazeImage.getHeight() + 10);
         startButton.setLayoutX(10);
-        //startButton.setOnAction(e -> autoMoveDroidMaze1(robotView));
         startButton.setFocusTraversable(false); //When the button was selectable, it would stop the arrow keys from working
         root.getChildren().add(startButton);
 
         //Start of maze 2 tab
         Tab maze2Tab = new Tab("Maze 2");
         maze2Tab.setClosable(false);
-        Pane root2 = new Pane();
+        Pane root2 = new Pane(); //second pane for second tab
 
         // Load the second maze image
         Image maze2Image = new Image("maze2.png");
@@ -93,24 +93,25 @@ public class RobotApplication extends Application {
         Button switchCar1 = new Button("Car");
         switchCar1.setLayoutX(90);
         switchCar1.setLayoutY(mazeImage.getHeight() + 10);
-        switchCar1.setOnAction(e -> setCarsVisible(car1,robotView));
+        switchCar1.setOnAction(e -> setCarsVisible(car1,robotView)); //Sets car visible and robot not visible
         Button switchRobot1 = new Button("Robot");
         switchRobot1.setLayoutX(127);
         switchRobot1.setLayoutY(mazeImage.getHeight()+10);
-        switchRobot1.setOnAction(e -> setRobotsVisible(car1,robotView));
-        root.getChildren().addAll(switchCar1, switchRobot1);
+        switchRobot1.setOnAction(e -> setRobotsVisible(car1,robotView));//Sets robot visible and car not visible
+        root.getChildren().addAll(switchCar1, switchRobot1); //adds buttons to Pane
 
+        //For second tab
         Button switchCar2 = new Button("Car");
         switchCar2.setLayoutX(90);
-        switchCar2.setLayoutY(mazeImage.getHeight() + 10);
+        switchCar2.setLayoutY(maze2Image.getHeight() + 10);
         switchCar2.setOnAction(e -> setCarsVisible(car2,robot2View));
         Button switchRobot2 = new Button("Robot");
         switchRobot2.setLayoutX(127);
-        switchRobot2.setLayoutY(mazeImage.getHeight()+10);
+        switchRobot2.setLayoutY(maze2Image.getHeight()+10);
         switchRobot2.setOnAction(e -> setRobotsVisible(car2,robot2View));
         root2.getChildren().addAll(switchCar2, switchRobot2);
 
-
+        //Sets each pane to each tab
         maze1Tab.setContent(root);
         maze2Tab.setContent(root2);
 
@@ -118,18 +119,17 @@ public class RobotApplication extends Application {
         tabPane.getTabs().addAll(maze1Tab, maze2Tab);
         tabPane.setFocusTraversable(false);
 
-        Scene scene = new Scene(tabPane, 800, 600);
+        Scene scene = new Scene(tabPane);
 
         //Handle key presses for first maze
         RobotController robotController = new RobotController(robotView, mazeImage);
-        //scene.setOnKeyPressed(e -> robotController.handleKeyPress(e, robotView));
         RobotController robot2Controller = new RobotController(robot2View, maze2Image);
-        maze1Tab.setOnSelectionChanged(e -> scene.setOnKeyPressed(f -> robot2Controller.handleKeyPress(f, robot2View)));
-        AnimationTimer mazeTimer = new AnimationTimer() {
+        AnimationTimer mazeTimer = new AnimationTimer() { //Timer checks which object to move
             @Override
             public void handle(long l) {
                 if (maze1Tab.isSelected() && robotView.isVisible()){
                     scene.setOnKeyPressed(e -> robotController.handleKeyPress(e, robotView));
+                    startButton.setOnAction(e -> autoMoveDroidMaze1(robotView));
                 } else if (maze2Tab.isSelected()&&robot2View.isVisible()) {
                     scene.setOnKeyPressed(e->robot2Controller.handleKeyPress(e,robot2View));
                 } else if (maze1Tab.isSelected() && car1.isVisible()) {
@@ -205,44 +205,6 @@ public class RobotApplication extends Application {
                 step10, step11, step12, step13, step14);
         sequence.play();
     }
-    private void autoMoveCarMaze1(Car car) {
-        // Create a series of movements as TranslateTransitions
-        car.setLayoutX(14);
-        car.setLayoutY(260);
-        TranslateTransition step1 = new TranslateTransition(Duration.seconds(1), car);
-        step1.setByX(25);
-        TranslateTransition step2 = new TranslateTransition(Duration.seconds(1), car);
-        step2.setByY(-110);
-        TranslateTransition step3 = new TranslateTransition(Duration.seconds(1), car);
-        step3.setByX(225);
-        TranslateTransition step4 = new TranslateTransition(Duration.seconds(1), car);
-        step4.setByY(-60);
-        TranslateTransition step5 = new TranslateTransition(Duration.seconds(1), car);
-        step5.setByX(55);
-        TranslateTransition step6 = new TranslateTransition(Duration.seconds(1), car);
-        step6.setByY(225);
-        TranslateTransition step7 = new TranslateTransition(Duration.seconds(1), car);
-        step7.setByX(60);
-        TranslateTransition step8 = new TranslateTransition(Duration.seconds(1), car);
-        step8.setByY(-105);
-        TranslateTransition step9 = new TranslateTransition(Duration.seconds(1), car);
-        step9.setByX(110);
-        TranslateTransition step10 = new TranslateTransition(Duration.seconds(1), car);
-        step10.setByY(-115);
-        TranslateTransition step11 = new TranslateTransition(Duration.seconds(1), car);
-        step11.setByX(60);
-        TranslateTransition step12 = new TranslateTransition(Duration.seconds(1), car);
-        step12.setByY(145);
-        TranslateTransition step13 = new TranslateTransition(Duration.seconds(1), car);
-        step13.setByX(25);
-        TranslateTransition step14 = new TranslateTransition(Duration.seconds(1), car);
-        step14.setByX(-560);
-        step14.setByY(18);
-        // Combine all movements into a sequence
-        SequentialTransition sequence = new SequentialTransition(step1, step2,step3, step4, step5, step6, step7, step8, step9,
-                step10, step11, step12, step13, step14);
-        sequence.play();
-    }
 
     private void autoMoveDroidMaze2(ImageView robotView){
         robotView.setX(23);
@@ -267,16 +229,29 @@ public class RobotApplication extends Application {
         SequentialTransition sequence = new SequentialTransition(step1,step2, step3, step4, step5, step6, step7, step8);
         sequence.play();
     }
+
+    /**
+     * @param car to set car visible
+     * @param robot to set robot invisible
+     */
     private void setCarsVisible(Car car,ImageView robot){
         car.setVisible(true);
         robot.setVisible(false);
     }
+
+    /**
+     * @param car to set car invisible
+     * @param robot to set robot visible
+     */
     private void setRobotsVisible(Car car, ImageView robot){
         car.setVisible(false);
         robot.setVisible(true);
     }
 }
 
+/**
+ * Car class creates a car object
+ */
 class Car extends Group{
     public Car(){
         Polygon car = new Polygon();

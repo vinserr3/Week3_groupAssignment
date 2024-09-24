@@ -18,7 +18,7 @@ public class RobotController {
 
     /**
      * Method that will move the robot on arrow key presses
-     * @param event the arrow key presses
+     * @param event key presses
      */
     public void handleKeyPress(KeyEvent event, ImageView robot) {
         double x = robot.getX();
@@ -50,6 +50,12 @@ public class RobotController {
         }
         checkGoalReached();
     }
+    //Handles key press for Car object
+
+    /**
+     * Overloaded handleKeyPress method for car object
+     * @param event key presses
+     */
     public void handleKeyPress(KeyEvent event, Car car) {
         double x = car.getLayoutX();//car.getBoundsInParent().getCenterX();
         double y = car.getLayoutY();//car.getBoundsInParent().getCenterY();
@@ -107,6 +113,12 @@ public class RobotController {
                 isPathClear(pixelReader, bottomRightX, bottomRightY);
     }
 
+    /**
+     * Helper method that will check if the car will hit one of the maze walls
+     * @param newX where the new x-coordinate will be
+     * @param newY where the new y-coordinate will be
+     * @return true if it doesn't hit a wall false if it does
+     */
     private boolean canMove(double newX, double newY, Car car) {
         PixelReader pixelReader = mazeImage.getPixelReader();
 
